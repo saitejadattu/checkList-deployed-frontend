@@ -1,23 +1,35 @@
-import logo from './logo.svg';
 import './App.css';
-
-function App() {
+import axios from 'axios'
+import { useState, useEffect } from "react"
+const App = () => {
+  const [list, setList] = useState([])
+  const fetchData = async () => {
+    const response = await axios.get("https://checklist-deployed-backed-1.onrender.com/")
+    setList(response.data)
+  }
+  useEffect(() => {
+    fetchData()
+  }, [])
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <div>
+        <table>
+          <thead>
+            <tr>
+              <th>checkList</th>
+              <th>status</th>
+            </tr>
+          </thead>
+          <tbody>
+            {list && list.map((each) =>
+              <tr key={each.name}>
+                <td >{each.name}</td>
+                <td >{each.status}</td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }
